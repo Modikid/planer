@@ -1,69 +1,130 @@
-# React + TypeScript + Vite
+# Planer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern planner application built with React 19, TypeScript, and Vite, deployable to Cloudflare Workers and as a native Android app via Capacitor.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Frontend**: React 19, TypeScript
+- **Build Tool**: Vite 7
+- **Deployment**: Cloudflare Workers (serverless)
+- **Mobile**: Capacitor 7 (Android support)
+- **Code Quality**: ESLint with TypeScript support
 
-## Expanding the ESLint configuration
+## Prerequisites
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Node.js (v18 or later)
+- npm or yarn
+- Cloudflare account (for deployment)
+- Android Studio (for mobile development)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Installation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Start the development server with hot module replacement:
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+The app will be available at `http://localhost:5173`
+
+### Building
+
+Build the project for production:
+
+```bash
+npm run build
+```
+
+Preview the production build locally:
+
+```bash
+npm run preview
+```
+
+### Linting
+
+Run ESLint to check code quality:
+
+```bash
+npm run lint
+```
+
+## Deployment
+
+### Cloudflare Workers
+
+Deploy to Cloudflare Workers:
+
+```bash
+npm run deploy
+```
+
+Generate TypeScript types for Cloudflare bindings:
+
+```bash
+npm run cf-typegen
+```
+
+Configuration is managed in `wrangler.jsonc`.
+
+## Mobile Development
+
+### Android
+
+Sync web assets to native project:
+
+```bash
+npm run cap:sync
+```
+
+Build and sync:
+
+```bash
+npm run cap:build
+```
+
+Open Android Studio:
+
+```bash
+npm run cap:android
+```
+
+## Project Structure
+
+```
+planer/
+├── src/                 # React application source
+│   ├── App.tsx         # Main app component
+│   ├── main.tsx        # Entry point
+│   └── assets/         # Static assets
+├── worker/             # Cloudflare Worker code
+│   └── index.ts        # Worker entry point
+├── android/            # Capacitor Android project
+├── public/             # Public static files
+├── dist/               # Build output
+│   ├── client/         # Web app build
+│   └── planer/         # Worker build
+├── capacitor.config.ts # Capacitor configuration
+├── wrangler.jsonc      # Cloudflare Workers config
+└── vite.config.ts      # Vite configuration
+```
+
+## Configuration Files
+
+- **capacitor.config.ts** - Capacitor mobile app configuration
+- **wrangler.jsonc** - Cloudflare Workers deployment settings
+- **vite.config.ts** - Vite build configuration
+- **tsconfig.json** - TypeScript configuration
+- **eslint.config.js** - ESLint rules
+
+## License
+
+Private project
