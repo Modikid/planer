@@ -281,7 +281,7 @@ function App() {
           {/* Cards Grid */}
           <Grid container spacing={2}>
             {/* Card 1 */}
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <Card>
                 <CardMedia
                   component="div"
@@ -307,7 +307,7 @@ function App() {
             </Grid>
 
             {/* Card 2 */}
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <Card>
                 <CardMedia
                   component="div"
@@ -337,7 +337,7 @@ function App() {
             </Grid>
 
             {/* Card 3 */}
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <Card>
                 <CardMedia
                   component="div"
@@ -367,7 +367,7 @@ function App() {
             </Grid>
 
             {/* Avatar Showcase Card */}
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <Card sx={{ minHeight: 300 }}>
                 <CardContent>
                   <Typography variant="h5" gutterBottom>
@@ -397,7 +397,7 @@ function App() {
             </Grid>
 
             {/* Interactive Card */}
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <Card sx={{ minHeight: 300 }}>
                 <CardContent>
                   <Typography variant="h5" gutterBottom>
@@ -427,7 +427,7 @@ function App() {
             </Grid>
 
             {/* Info Card */}
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
               <Card sx={{ minHeight: 300 }}>
                 <CardContent>
                   <Typography variant="h5" gutterBottom>
@@ -507,7 +507,7 @@ function App() {
         <BottomNavigation
           showLabels
           value={bottomNavValue}
-          onChange={(event, newValue) => {
+          onChange={(_event, newValue) => {
             setBottomNavValue(newValue)
           }}
         >
