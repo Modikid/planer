@@ -12,7 +12,11 @@
 		"cf-typegen": "wrangler types",
 		"cap:sync": "cap sync",
 		"cap:android": "cap open android",
-		"cap:build": "npm run build && cap sync"
+		"cap:build": "npm run build && cap sync",
+		"db:migrate": "wrangler d1 migrations apply planer-db --remote",
+		"db:migrate:local": "wrangler d1 migrations apply planer-db --local",
+		"db:console": "wrangler d1 execute planer-db --remote",
+		"db:console:local": "wrangler d1 execute planer-db --local"
 	},
 	"dependencies": {
 		"@capacitor/android": "^7.4.4",
@@ -26,7 +30,7 @@
 		"react-dom": "^19.1.1"
 	},
 	"devDependencies": {
-		"@cloudflare/vite-plugin": "^1.14.2",
+		"@cloudflare/vite-plugin": "^1.13.11",
 		"@eslint/js": "^9.33.0",
 		"@types/react": "^19.1.10",
 		"@types/react-dom": "^19.1.7",
@@ -38,6 +42,6 @@
 		"typescript": "~5.8.3",
 		"typescript-eslint": "^8.39.1",
 		"vite": "^7.1.2",
-		"wrangler": "^4.48.0"
+		"wrangler": "^4.52.1"
 	}
 }
