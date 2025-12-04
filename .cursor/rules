@@ -1,0 +1,61 @@
+# Project Rules for Planer Application
+
+## Technology Stack
+This project uses the following technologies:
+- **Frontend**: Vite + React + MUI (Material-UI)
+- **Backend**: Cloudflare Workers with Hono framework
+- **Database**: Cloudflare D1 (SQLite-based)
+- **Authentication**: Firebase Auth with JWT tokens
+- **Mobile**: Capacitor for Android/iOS builds
+
+## Code Standards
+
+### Language Requirements
+- All code comments MUST be in English
+- All log messages, console output, and error messages MUST be in English
+- Code must be clear, simple, and readable
+- Always choose the simplest implementation approach
+
+### Development Principles
+1. **Preserve Existing Functionality**: Never break or remove existing features when adding new ones
+2. **Simplicity First**: If there's a simpler way to implement something, always choose it
+3. **Code Quality**: Consistently simplify and optimize code without changing its intended behavior
+4. **No Unsolicited Documentation**: Do not automatically create documentation files (.md) unless explicitly requested
+5. **Technology Approval**: Always ask before introducing new technologies or programming languages not in the current stack
+
+## Project Structure
+- `/src` - React frontend application
+- `/worker` - Cloudflare Workers backend (Hono)
+- `/migrations` - D1 database migrations
+- `/android` - Capacitor Android build
+- `/dist` - Build output
+
+## API Endpoints
+All API endpoints are defined in `/worker/index.ts` using Hono framework.
+
+## Database
+- D1 database migrations in `/migrations`
+- Always use prepared statements for SQL queries
+- Follow migration naming convention: `XXXX_description.sql`
+
+## Authentication
+- Firebase JWT tokens for authentication
+- Validate tokens on all protected endpoints
+- Store minimal user data in D1
+
+## Component Development
+- Use MUI components for UI consistency
+- Follow React hooks best practices
+- Keep components simple and focused
+- Use TypeScript for type safety
+
+## Testing
+- Test on local development environment first
+- Use Wrangler for local Cloudflare Workers development
+- Test Capacitor builds on actual devices when possible
+
+## Deployment
+- Frontend: Cloudflare Pages
+- Backend: Cloudflare Workers
+- Database: Cloudflare D1
+
