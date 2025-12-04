@@ -1,58 +1,56 @@
-export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
+import { Hono } from 'hono';
 
-    // API для получения информации о текущей версии приложения
-    if (url.pathname === "/api/version") {
-      try {
-        const result = await env.DB.prepare(
-          "SELECT version, platform, build_number, release_date, description FROM app_version WHERE is_current = 1 ORDER BY created_at DESC LIMIT 1"
-        ).first();
+const app = new Hono<{ Bindings: Env }>();
 
-        if (!result) {
-          return Response.json({ error: "Version not found" }, { status: 404 });
-        }
+// Get current version of the application
+app.get('/api/version', async (c) => {
+  try {
+    const result = await c.env.DB.prepare(
+      "SELECT version, platform, build_number, release_date, description FROM app_version WHERE is_current = 1 ORDER BY created_at DESC LIMIT 1"
+    ).first();
 
-        return Response.json({
-          success: true,
-          data: result,
-        });
-      } catch (error) {
-        return Response.json(
-          { error: "Database error", message: (error as Error).message },
-          { status: 500 }
-        );
-      }
+    if (!result) {
+      return c.json({ error: "Version not found" }, 404);
     }
 
-    // API для получения всех версий
-    if (url.pathname === "/api/versions") {
-      try {
-        const { results } = await env.DB.prepare(
-          "SELECT * FROM app_version ORDER BY created_at DESC"
-        ).all();
+    return c.json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    return c.json(
+      { error: "Database error", message: (error as Error).message },
+      500
+    );
+  }
+});
 
-        return Response.json({
-          success: true,
-          data: results,
-          count: results.length,
-        });
-      } catch (error) {
-        return Response.json(
-          { error: "Database error", message: (error as Error).message },
-          { status: 500 }
-        );
-      }
-    }
+// Get all versions
+app.get('/api/versions', async (c) => {
+  try {
+    const { results } = await c.env.DB.prepare(
+      "SELECT * FROM app_version ORDER BY created_at DESC"
+    ).all();
 
-    // Тестовый API endpoint
-    if (url.pathname.startsWith("/api/")) {
-      return Response.json({
-        name: `${env.MY_NAME}`,
-        message: "API is working!",
-      });
-    }
+    return c.json({
+      success: true,
+      data: results,
+      count: results.length,
+    });
+  } catch (error) {
+    return c.json(
+      { error: "Database error", message: (error as Error).message },
+      500
+    );
+  }
+});
 
-    return new Response(null, { status: 404 });
-  },
-} satisfies ExportedHandler<Env>;
+// Test API endpoint
+app.get('/api/*', (c) => {
+  return c.json({
+    name: c.env.MY_NAME,
+    message: "API is working!",
+  });
+});
+
+export default app;
