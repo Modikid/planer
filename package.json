@@ -24,8 +24,11 @@
 		"@capacitor/core": "^7.4.4",
 		"@emotion/react": "^11.14.0",
 		"@emotion/styled": "^11.14.1",
+		"@hono/firebase-auth": "^3.0.0",
 		"@mui/icons-material": "^7.3.5",
 		"@mui/material": "^7.3.5",
+		"firebase": "^11.1.0",
+		"firebase-auth-cloudflare-workers": "^2.5.0",
 		"hono": "^4.10.7",
 		"react": "^19.1.1",
 		"react-dom": "^19.1.1"

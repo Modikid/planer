@@ -1,6 +1,65 @@
 import { Hono } from 'hono';
+import { cors } from 'hono/cors';
+import {
+  type VerifyFirebaseAuthConfig,
+  verifyFirebaseAuth,
+  getFirebaseToken,
+} from '@hono/firebase-auth';
 
 const app = new Hono<{ Bindings: Env }>();
+
+// CORS configuration
+app.use('*', cors({
+  origin: ['http://localhost:5173', 'http://localhost:8787'],
+  credentials: true,
+}));
+
+// Firebase Auth configuration
+const firebaseAuthConfig: VerifyFirebaseAuthConfig = {
+  projectId: 'planer-2025',
+  authorizationHeaderKey: 'Authorization',
+};
+
+// Apply Firebase Auth middleware to all /api/* routes except public ones
+app.use('/api/*', async (c, next) => {
+  // Skip auth for public endpoints
+  const publicEndpoints = ['/api/public'];
+  if (publicEndpoints.some(endpoint => c.req.path.startsWith(endpoint))) {
+    return next();
+  }
+
+  // Apply Firebase Auth verification
+  const middleware = verifyFirebaseAuth(firebaseAuthConfig);
+  return middleware(c, next);
+});
+
+// Get current user info (authenticated endpoint)
+app.get('/api/user', async (c) => {
+  try {
+    const idToken = getFirebaseToken(c);
+    
+    if (!idToken) {
+      return c.json({ error: "User not authenticated" }, 401);
+    }
+    
+    // TypeScript narrowing - idToken is guaranteed to be non-null here
+    const { uid, email, email_verified } = idToken;
+    
+    return c.json({
+      success: true,
+      user: {
+        uid,
+        email,
+        email_verified,
+      },
+    });
+  } catch (error) {
+    return c.json(
+      { error: "Failed to get user info", message: (error as Error).message },
+      500
+    );
+  }
+});
 
 // Get current version of the application
 app.get('/api/version', async (c) => {

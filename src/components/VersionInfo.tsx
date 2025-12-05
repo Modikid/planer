@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Card, CardContent, Typography, CircularProgress, Box } from '@mui/material';
+import { fetchWithAuth } from '../utils/api';
 
 interface VersionData {
   version: string;
@@ -20,7 +21,7 @@ export function VersionInfo() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('/api/version')
+    fetchWithAuth('/api/version')
       .then(res => res.json() as Promise<ApiResponse>)
       .then(data => {
         if (data.success) {
@@ -86,4 +87,5 @@ export function VersionInfo() {
     </Card>
   );
 }
+
 

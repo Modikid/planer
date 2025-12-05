@@ -14,7 +14,8 @@
 		"enabled": true
 	},
 	"vars": {
-		"MY_NAME": "Madiyar"
+		"MY_NAME": "Madiyar",
+		"PUBLIC_JWK_CACHE_KEY": "firebase-auth-jwk-cache"
 	},
 	/**
 	 * D1 Database Binding
@@ -26,6 +27,16 @@
 			"database_name": "planer-db",
 			"database_id": "8e3768b0-6db2-40ed-ad39-8f6639991149",
 			"migrations_dir": "migrations"
+		}
+	],
+	/**
+	 * KV Namespace Binding for Firebase Auth
+	 * https://developers.cloudflare.com/kv/
+	 */
+	"kv_namespaces": [
+		{
+			"binding": "PUBLIC_JWK_CACHE_KV",
+			"id": "placeholder"
 		}
 	]
 	/**

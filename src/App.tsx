@@ -29,6 +29,9 @@ import {
   createTheme,
   CssBaseline,
   Switch,
+  CircularProgress,
+  Menu,
+  MenuItem,
 } from '@mui/material'
 import {
   Menu as MenuIcon,
@@ -44,15 +47,24 @@ import {
   Brightness4 as DarkModeIcon,
   Brightness7 as LightModeIcon,
   SettingsBrightness as SystemModeIcon,
+  Logout as LogoutIcon,
 } from '@mui/icons-material'
 import './App.css'
+import { useAuth } from './contexts/AuthContext'
+import { Login } from './components/Login'
+import { Register } from './components/Register'
+import { UserProfile } from './components/UserProfile'
 
 type ThemeMode = 'light' | 'dark' | 'system'
 
 function App() {
+  const { user, loading, logout } = useAuth()
+  const [showRegister, setShowRegister] = useState(false)
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
   const [bottomNavValue, setBottomNavValue] = useState(0)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const userMenuOpen = Boolean(anchorEl)
   
   // Тема: по умолчанию system, сохраняется в localStorage
   const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
@@ -115,6 +127,19 @@ function App() {
     setThemeMode(mode)
   }
 
+  const handleUserMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleUserMenuClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleLogout = async () => {
+    handleUserMenuClose()
+    await logout()
+  }
+
   const drawerItems = [
     { text: 'Главная', icon: <HomeIcon /> },
     { text: 'Дашборд', icon: <DashboardIcon /> },
@@ -123,6 +148,40 @@ function App() {
   ]
 
   const currentMode = themeMode === 'system' ? systemTheme : themeMode
+
+  // Show loading spinner while checking auth state
+  if (loading) {
+    return (
+      <ThemeProvider theme={activeTheme}>
+        <CssBaseline />
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '100vh',
+            bgcolor: 'background.default',
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      </ThemeProvider>
+    )
+  }
+
+  // Show login/register if user is not authenticated
+  if (!user) {
+    return (
+      <ThemeProvider theme={activeTheme}>
+        <CssBaseline />
+        {showRegister ? (
+          <Register onSwitchToLogin={() => setShowRegister(false)} />
+        ) : (
+          <Login onSwitchToRegister={() => setShowRegister(true)} />
+        )}
+      </ThemeProvider>
+    )
+  }
 
   return (
     <ThemeProvider theme={activeTheme}>
@@ -171,10 +230,42 @@ function App() {
                 />
               }
             >
-              <Avatar alt="User Avatar" sx={{ bgcolor: 'secondary.main' }}>
-                JD
+              <Avatar 
+                alt="User Avatar" 
+                sx={{ bgcolor: 'secondary.main', cursor: 'pointer' }}
+                onClick={handleUserMenuOpen}
+              >
+                {user?.email?.charAt(0).toUpperCase() || 'U'}
               </Avatar>
             </Badge>
+            
+            {/* User Menu */}
+            <Menu
+              anchorEl={anchorEl}
+              open={userMenuOpen}
+              onClose={handleUserMenuClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+            >
+              <MenuItem disabled>
+                <Typography variant="body2" color="text.secondary">
+                  {user?.email}
+                </Typography>
+              </MenuItem>
+              <Divider />
+              <MenuItem onClick={handleLogout}>
+                <ListItemIcon>
+                  <LogoutIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Logout</ListItemText>
+              </MenuItem>
+            </Menu>
           </Toolbar>
         </AppBar>
 
@@ -277,6 +368,11 @@ function App() {
           <Typography variant="h4" gutterBottom sx={{ mb: 3, textAlign: 'center' }}>
             Демонстрация компонентов MUI
           </Typography>
+
+          {/* User Profile Section */}
+          <Box sx={{ mb: 3 }}>
+            <UserProfile />
+          </Box>
 
           {/* Cards Grid */}
           <Grid container spacing={2}>
