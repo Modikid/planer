@@ -3,8 +3,8 @@
 
 Write-Host "Creating KV namespace for Firebase Auth..." -ForegroundColor Cyan
 
-# Create KV namespace
-$output = npx wrangler kv:namespace create PUBLIC_JWK_CACHE_KV 2>&1 | Out-String
+# Create KV namespace (note: use spaces not colons in newer Wrangler)
+$output = npx wrangler kv namespace create PUBLIC_JWK_CACHE_KV 2>&1 | Out-String
 
 Write-Host $output
 
