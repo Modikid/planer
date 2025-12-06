@@ -1,10 +1,10 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
+import { verifyFirebaseAuth, getFirebaseToken } from '@hono/firebase-auth';
 import type { FirebaseIdToken } from 'firebase-auth-cloudflare-workers';
-import { verifyFirebaseAuth, getFirebaseToken } from './firebase-auth-middleware';
 
 type Variables = {
-  idToken: FirebaseIdToken;
+  firebaseIdToken: FirebaseIdToken;
 };
 
 const app = new Hono<{ Bindings: Env; Variables: Variables }>();
@@ -15,12 +15,6 @@ app.use('*', cors({
   credentials: true,
 }));
 
-// Firebase Auth configuration
-const firebaseAuthConfig = {
-  projectId: 'planer-2025',
-  authorizationHeaderKey: 'Authorization',
-};
-
 // Apply Firebase Auth middleware to all /api/* routes except public ones
 app.use('/api/*', async (c, next) => {
   // Skip auth for public endpoints
@@ -30,7 +24,10 @@ app.use('/api/*', async (c, next) => {
   }
 
   // Apply Firebase Auth verification
-  return verifyFirebaseAuth(firebaseAuthConfig)(c, next);
+  return verifyFirebaseAuth({
+    projectId: 'planer-2025',
+    authorizationHeaderKey: 'Authorization',
+  })(c, next);
 });
 
 // Get current user info (authenticated endpoint)
