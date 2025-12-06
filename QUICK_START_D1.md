@@ -82,3 +82,5 @@ import { VersionInfo } from './components/VersionInfo';
 - Используйте компонент VersionInfo в своем приложении
 - Добавьте пользовательские данные в базу D1
 
+
+

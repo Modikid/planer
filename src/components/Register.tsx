@@ -172,3 +172,6 @@ export const Register = ({ onSwitchToLogin }: RegisterProps) => {
     </Box>
   );
 };
+
+
+

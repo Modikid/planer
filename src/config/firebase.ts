@@ -1,20 +1,21 @@
-import { initializeApp } from "firebase/app";
-import { getAuth, type Auth } from "firebase/auth";
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 
 // Firebase configuration
+// These values should be replaced with your actual Firebase project configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDo1tLQhljW0IJNHvo7Iv-6YiYq6kzWMaA",
-  authDomain: "planer-2025.firebaseapp.com",
-  projectId: "planer-2025",
-  storageBucket: "planer-2025.firebasestorage.app",
-  messagingSenderId: "164783494100",
-  appId: "1:164783494100:web:0335396b095dbf0d063c41"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || '',
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || '',
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || '',
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || '',
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '',
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || '',
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 // Initialize Firebase Authentication and get a reference to the service
-export const auth: Auth = getAuth(app);
-
+export const auth = getAuth(app);
 export default app;
+

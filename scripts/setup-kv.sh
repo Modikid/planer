@@ -27,3 +27,6 @@ echo "Next steps:"
 echo "1. Update the KV namespace ID in wrangler.jsonc"
 echo "2. Enable Email/Password authentication in Firebase Console"
 echo "3. Run: npm run dev"
+
+
+

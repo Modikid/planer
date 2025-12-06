@@ -1,12 +1,13 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
-import {
-  type VerifyFirebaseAuthConfig,
-  verifyFirebaseAuth,
-  getFirebaseToken,
-} from '@hono/firebase-auth';
+import type { FirebaseIdToken } from 'firebase-auth-cloudflare-workers';
+import { verifyFirebaseAuth, getFirebaseToken } from './firebase-auth-middleware';
 
-const app = new Hono<{ Bindings: Env }>();
+type Variables = {
+  idToken: FirebaseIdToken;
+};
+
+const app = new Hono<{ Bindings: Env; Variables: Variables }>();
 
 // CORS configuration
 app.use('*', cors({
@@ -15,7 +16,7 @@ app.use('*', cors({
 }));
 
 // Firebase Auth configuration
-const firebaseAuthConfig: VerifyFirebaseAuthConfig = {
+const firebaseAuthConfig = {
   projectId: 'planer-2025',
   authorizationHeaderKey: 'Authorization',
 };
@@ -29,8 +30,7 @@ app.use('/api/*', async (c, next) => {
   }
 
   // Apply Firebase Auth verification
-  const middleware = verifyFirebaseAuth(firebaseAuthConfig);
-  return middleware(c, next);
+  return verifyFirebaseAuth(firebaseAuthConfig)(c, next);
 });
 
 // Get current user info (authenticated endpoint)
@@ -42,15 +42,12 @@ app.get('/api/user', async (c) => {
       return c.json({ error: "User not authenticated" }, 401);
     }
     
-    // TypeScript narrowing - idToken is guaranteed to be non-null here
-    const { uid, email, email_verified } = idToken;
-    
     return c.json({
       success: true,
       user: {
-        uid,
-        email,
-        email_verified,
+        uid: idToken.uid,
+        email: idToken.email,
+        email_verified: idToken.email_verified || false,
       },
     });
   } catch (error) {

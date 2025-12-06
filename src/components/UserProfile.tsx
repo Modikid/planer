@@ -72,3 +72,6 @@ export const UserProfile = () => {
     </Card>
   );
 };
+
+
+

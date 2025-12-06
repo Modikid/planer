@@ -24,7 +24,6 @@
 		"@capacitor/core": "^7.4.4",
 		"@emotion/react": "^11.14.0",
 		"@emotion/styled": "^11.14.1",
-		"@hono/firebase-auth": "^2.0.4",
 		"@mui/icons-material": "^7.3.5",
 		"@mui/material": "^7.3.5",
 		"firebase": "^11.0.0",

@@ -33,3 +33,6 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   // User is authenticated
   return <>{children}</>;
 };
+
+
+

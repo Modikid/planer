@@ -22,3 +22,6 @@ Write-Host "`nNext steps:" -ForegroundColor Cyan
 Write-Host "1. Update the KV namespace ID in wrangler.jsonc"
 Write-Host "2. Enable Email/Password authentication in Firebase Console"
 Write-Host "3. Run: npm run dev" -ForegroundColor Green
+
+
+
